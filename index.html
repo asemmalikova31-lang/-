@@ -1,0 +1,50 @@
+
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LegalCheck KZ</title><style>
+:root{--nav:#111a2e;--bg:#f3f6fb;--card:#fff;--line:#dde4ef;--ink:#182238;--muted:#68758a;--blue:#2457d6;--ok:#14835a;--bad:#c43e4d;--warn:#a46a00}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px Segoe UI,Arial}.top{height:62px;background:var(--nav);color:#fff;display:flex;align-items:center;padding:0 24px;justify-content:space-between}.logo{font-size:18px;font-weight:800}.logo small{display:block;color:#aebbd3;font-size:10px;font-weight:400}.offline{border:1px solid #506080;padding:6px 10px;border-radius:20px;font-size:11px}main{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 62px)}aside{background:#fff;border-right:1px solid var(--line);padding:15px}.nav{padding:10px 11px;border-radius:8px;margin-bottom:5px;cursor:pointer}.nav.active,.nav:hover{background:#edf2ff;color:var(--blue);font-weight:700}.content{padding:25px;max-width:1300px;width:100%;margin:auto}.page{display:none}.page.active{display:block}.card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:18px;margin-bottom:16px;box-shadow:0 7px 22px #15254a0a}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.upload{border:2px dashed #aeb9cc;padding:25px;text-align:center;border-radius:12px;cursor:pointer}.files{margin-top:10px}.file{padding:10px;border-bottom:1px solid var(--line)}button{border:0;border-radius:8px;padding:9px 13px;font-weight:700;cursor:pointer}.primary{background:var(--blue);color:#fff}.secondary{background:#edf1f7}.danger{background:#fff0f1;color:var(--bad)}.row{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}.pill{font-size:11px;padding:4px 8px;border-radius:99px;font-weight:800}.ok{background:#e8f7ef;color:var(--ok)}.bad{background:#fff0f1;color:var(--bad)}.warn{background:#fff5dc;color:var(--warn)}.muted{color:var(--muted)}.tree{white-space:pre-wrap;background:#f8faff;border:1px solid var(--line);padding:13px;border-radius:10px;font-family:Consolas,monospace}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.kpi{padding:13px;border:1px solid var(--line);border-radius:10px}.kpi b{font-size:20px;display:block}.check{padding:12px 0;border-bottom:1px solid var(--line)}input,select,textarea{width:100%;padding:9px;border:1px solid #cfd8e7;border-radius:8px}label{font-weight:700;display:block;margin:8px 0 5px}@media(max-width:850px){main{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line)}.grid{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}}
+</style></head><body>
+<header class="top"><div class="logo">LegalCheck KZ<small>локальная система правовой экспертизы</small></div><div class="offline">● 127.0.0.1 · данные не выходят в интернет</div></header>
+<main><aside>
+<div class="nav active" data-page="case">Дело</div><div class="nav" data-page="review">Экспертиза</div><div class="nav" data-page="law">Нормативная база</div><div class="nav" data-page="workflow">Согласование</div><div class="nav" data-page="audit">Аудит</div>
+<hr><div class="muted" style="font-size:11px">Роли</div><select id="role"><option>HR</option><option>EX специалист</option><option>Юрист</option><option>Конечный подписант</option><option>Администратор</option></select>
+</aside><section class="content">
+<div id="case" class="page active"><h1>Дело</h1><p class="muted">Загрузите полный комплект, включая приложения и материалы, на которые ссылается приказ.</p>
+<div class="card"><h3>Документы</h3><label class="upload">Выбрать файлы<input id="files" type="file" multiple accept=".pdf,.docx,.doc,.xlsx,.xls,.txt,.md,.json,.jpg,.jpeg,.png" hidden></label><div id="fileList" class="files muted">Нет документов</div><button class="primary" id="run" style="margin-top:12px">Запустить экспертизу</button></div>
+<div class="card"><h3>Принцип определения первичного документа</h3><div class="tree">Приказ
+└── СЗ / докладная
+    ├── Акт
+    ├── Заключение проверки
+    ├── Обращение физического лица
+    └── иные приложения
+          ↓
+  первичный источник конкретного факта
+          ↓
+  дата обнаружения проступка</div><p class="muted">Ссылка в приказе на СЗ от 25.08.2026 не является автоматической датой обнаружения. Система ищет первичный материал внутри цепочки.</p></div>
+</div>
+<div id="review" class="page"><h1>Правовая экспертиза</h1><div id="result" class="card">Запустите анализ дела.</div></div>
+<div id="law" class="page"><h1>Нормативная база</h1><div class="card"><p>База обновляется вручную. Интернет не используется.</p><label>Название версии</label><input id="lawName" placeholder="Трудовой кодекс РК — редакция 2026-10-07"><label>JSON версии</label><textarea id="lawJson" rows="12" placeholder='{"name":"...","articles":{}}'></textarea><button class="primary" id="saveLaw">Сохранить локально</button></div><div id="lawList" class="card">Загрузка…</div></div>
+<div id="workflow" class="page"><h1>Маршрут согласования</h1><div class="card"><div class="row"><b>1. HR</b><span class="pill ok">Комплектует дело</span></div><div class="row"><b>2. EX специалист</b><span class="pill ok">Подтверждает факты</span></div><div class="row"><b>3. Юрист</b><span class="pill ok">Правовая экспертиза</span></div><div class="row"><b>4. Конечный подписант</b><span class="pill warn">Финальное решение и подпись</span></div><p class="muted">Юрист не является финальным подписантом.</p></div></div>
+<div id="audit" class="page"><h1>Аудит</h1><div class="card"><p>Локальный журнал должен фиксировать загрузку, классификацию, изменение даты обнаружения, правовую экспертизу, утверждение и подписание.</p><div id="cases">Загрузка дел…</div></div></div>
+</section></main>
+<script>
+let docs=[];
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+$$('.nav').forEach(n=>n.onclick=()=>{$$('.nav').forEach(x=>x.classList.remove('active'));n.classList.add('active');$$('.page').forEach(p=>p.classList.remove('active'));$('#'+n.dataset.page).classList.add('active');if(n.dataset.page==='law')loadLaw();if(n.dataset.page==='audit')loadCases()});
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+async function localRead(file){let text='';try{text=await file.text()}catch{}return {name:file.name,size:file.size,text,kind:'',date:null}}
+$('#files').onchange=async e=>{for(const f of e.target.files)docs.push(await localRead(f));renderFiles();e.target.value=''}
+function renderFiles(){$('#fileList').innerHTML=docs.map(d=>`<div class=file><b>${esc(d.name)}</b><span class=muted> · ${Math.round(d.size/1024)} KB</span></div>`).join('')||'Нет документов'}
+async function run(){
+ const r=await fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({documents:docs})});
+ const x=await r.json(); $('.nav[data-page=review]').click();
+ let h=`<div class=kpis><div class=kpi><b>${docs.length}</b><small>документов</small></div><div class=kpi><b>${x.primary?esc(x.primary.date):'—'}</b><small>дата обнаружения</small></div><div class=kpi><b>${esc(x.deadline||'—')}</b><small>ориентир срока</small></div><div class=kpi><b>${x.order?esc(x.order.date):'—'}</b><small>приказ</small></div></div><h3>Первичный документ</h3><div class=tree>${x.primary?esc(x.primary.name)+'\\n'+esc(x.primary.date)+'\\n\\n'+esc(x.primary_reason||'Документ выбран как первичный кандидат.'):'Не найден'}</div><h3>Проверки</h3>`;
+ for(const f of x.findings)h+=`<div class=check><span class="pill ${f.status}">${f.status==='ok'?'СОБЛЮДЕНО':f.status==='bad'?'РИСК':'ПРОВЕРИТЬ'}</span> <b>${esc(f.title)}</b><div class=muted>${esc(f.text)}</div><small>${esc(f.reason)}</small></div>`;
+ h+=`<p class=muted>Важно: автоматический вывод является предварительным. Юрист подтверждает или изменяет дату обнаружения с мотивировкой.</p>`;
+ $('#result').innerHTML=h;
+}
+$('#run').onclick=run;
+async function loadLaw(){let r=await fetch('/api/law');let a=await r.json();$('#lawList').innerHTML=a.map(x=>`<div class=row><b>${esc(x.name||'НПА')}</b><span class=muted>${esc(x.version_date||x.status||'')}</span></div>`).join('')||'Нет локальных версий'}
+$('#saveLaw').onclick=async()=>{let name=$('#lawName').value||'law.json',c;try{c=JSON.parse($('#lawJson').value)}catch{alert('Некорректный JSON');return}await fetch('/api/law',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({filename:name.replace(/\\s+/g,'_')+'.json',content:c})});loadLaw()}
+async function loadCases(){let r=await fetch('/api/cases');let a=await r.json();$('#cases').innerHTML=a.map(x=>`<div class=row><b>${esc(x.case_id)}</b><span>${esc(x.approval?.status||'draft')}</span></div>`).join('')||'Дел нет'}
+</script></body></html>
